@@ -66,18 +66,19 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
   z-index: 1000;
 }
 .site-header .logo-img {
-  height: 184px; width: auto; object-fit: contain;
+  height: 129px; width: auto; object-fit: contain;
   transform: translateY(30px);
 }
-.header-brand {
-  font-family: var(--font-display);
-  font-size: 18px; font-weight: 700; letter-spacing: 3px;
-  color: rgba(255,255,255,0.85); text-transform: uppercase;
+.header-ci-img {
+  height: clamp(18px, 2.8vw, 32px); width: auto; object-fit: contain;
   transform: translateY(30px);
-  transition: color 0.35s ease;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  transition: filter 0.35s ease, opacity 0.35s ease;
 }
-.site-header.header--light .header-brand {
-  color: rgba(26,26,46,0.75);
+.site-header.header--light .header-ci-img {
+  filter: none;
+  opacity: 0.8;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -349,8 +350,8 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
 @media (max-width: 768px) {
   :root { --header-h: 48px; --nav-h: 56px; }
   .site-header { padding: 0 16px; }
-  .site-header .logo-img { height: 120px; transform: translateY(10px); }
-  .header-brand { font-size: 12px; letter-spacing: 2px; transform: translateY(10px); }
+  .site-header .logo-img { height: 59px; transform: translateY(10px); }
+  .header-ci-img { height: clamp(14px, 4vw, 20px); transform: translateY(10px); }
   .page-nav { gap: 8px; padding: 0 10px; }
   .nav-btn  { width: 30px; height: 30px; }
   .dot      { width: 5px; height: 5px; }
@@ -822,7 +823,7 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
   min-height: 100%;
   background: linear-gradient(160deg, #0A1628 0%, #0D2244 45%, #081525 100%);
   display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--header-h) + clamp(14px,2vh,28px)) clamp(28px,7vw,100px) clamp(20px,3vh,40px);
+  padding: calc(var(--header-h) + clamp(60px,7vh,80px)) clamp(28px,7vw,100px) clamp(20px,3vh,40px);
   gap: clamp(12px,2vh,24px);
   position: relative; overflow: hidden; color: white;
 }
@@ -950,7 +951,7 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
 .page-operation {
   min-height: 100%; background: #ffffff;
   display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--header-h) + clamp(14px,2vh,28px)) clamp(28px,7vw,100px) clamp(16px,2.5vh,36px);
+  padding: calc(var(--header-h) + clamp(60px,7vh,80px)) clamp(28px,7vw,100px) clamp(16px,2.5vh,36px);
   gap: clamp(12px,2vh,26px); position: relative; overflow: hidden;
 }
 
@@ -1342,7 +1343,7 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
   min-height: 100%;
   background: linear-gradient(155deg, #0F1626 0%, #1A1A2E 55%, #0D1220 100%);
   display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--header-h) + clamp(12px,1.8vh,24px)) clamp(28px,6vw,90px) clamp(14px,2vh,28px);
+  padding: calc(var(--header-h) + clamp(60px,7vh,80px)) clamp(28px,6vw,90px) clamp(14px,2vh,28px);
   gap: clamp(10px,1.8vh,20px);
   position: relative; overflow: hidden; color: white;
 }
@@ -1540,7 +1541,7 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
   min-height: 100%;
   background: linear-gradient(155deg, #0A1A10 0%, #122010 55%, #0A160C 100%);
   display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--header-h) + clamp(10px,1.6vh,20px)) clamp(28px,6vw,90px) clamp(12px,1.8vh,24px);
+  padding: calc(var(--header-h) + clamp(60px,7vh,80px)) clamp(28px,6vw,90px) clamp(12px,1.8vh,24px);
   gap: clamp(10px,1.6vh,18px);
   position: relative; overflow: hidden; color: white;
 }
@@ -1927,8 +1928,8 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
 
 <!-- Fixed Header -->
 <header class="site-header">
-  <img class="logo-img" src="image/logo.png" alt="Smoothie24 로고">
-  <span class="header-brand">Arugin Co.</span>
+  <img class="logo-img" src="image/bi_logo_e.png" alt="Smoothie24 로고">
+  <img class="header-ci-img" src="image/ci_logo.png" alt="Arugin Co.">
 </header>
 
 <!-- Pages Wrapper -->
