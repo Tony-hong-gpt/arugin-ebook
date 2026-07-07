@@ -136,7 +136,8 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
   .nav-edge-next { right: 8px; }
 }
 @media (max-width: 480px) {
-  .nav-edge-btn { display: none; }
+  .nav-edge-btn { width: 40px; height: 40px; }
+  .nav-edge-btn svg { width: 20px; height: 20px; }
 }
 .nav-dots { display: flex; gap: 13px; align-items: center; }
 .dot {
@@ -403,7 +404,9 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
 
 /* Small phones */
 @media (max-width: 400px) {
-  .nav-dots { display: none; }
+  .nav-dots { gap: 7px; }
+  .dot { width: 6px; height: 6px; }
+  .page-counter { min-width: 0; font-size: 10px; }
   .cover-machine img { height: clamp(120px, 26vh, 180px); }
   .cover-fruits  img { height: clamp(60px, 12vh, 95px); }
 }
@@ -2714,14 +2717,11 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
                                 dur="14s" repeatCount="indefinite"/>
             </circle>
 
-            <!-- 60초 세척 진행 링 (연한 핑크로 채워짐) -->
-            <circle cx="140" cy="140" r="108" fill="none"
+            <!-- 60초 세척 진행 링 (연한 핑크로 채워짐, JS로 숫자와 동기화 구동) -->
+            <circle id="hygieneRing" cx="140" cy="140" r="108" fill="none"
                     stroke="#F28FAE" stroke-width="3" stroke-linecap="round"
                     stroke-dasharray="678.58" stroke-dashoffset="678.58"
                     transform="rotate(-90 140 140)">
-              <animate attributeName="stroke-dashoffset"
-                       values="678.58;0;0" keyTimes="0;0.9;1"
-                       dur="5s" repeatCount="indefinite"/>
             </circle>
 
             <!-- Phase 1: 12시 방향 (140, 32) — 예열 -->
@@ -4184,18 +4184,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 세척 60초 카운터 (5초 주기: 4.5초 동안 1→60 카운트 + 0.5초 유지 후 반복)
+  // 세척 60초 카운터 + 진행 링 (5초 주기: 4.5초 동안 1→60 카운트 + 0.5초 유지 후 반복)
+  // 숫자와 링을 하나의 rAF 루프에서 같은 시간값으로 구동해 어긋나지 않도록 함
+  // (SVG SMIL <animate>는 iOS/Safari에서 백그라운드 복귀 시 독자적으로 리셋되어 JS 타이머와 어긋날 수 있어 제거)
   const timerNum = document.getElementById('hygieneTimerNum');
-  if (timerNum) {
+  const ringEl = document.getElementById('hygieneRing');
+  if (timerNum && ringEl) {
+    const RING_LEN = 678.58;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion) {
       timerNum.textContent = '60';
+      ringEl.setAttribute('stroke-dashoffset', '0');
     } else {
       const CYCLE = 5000, COUNT_DUR = 4500, STEPS = 60;
       (function tick() {
         const t = performance.now() % CYCLE;
-        const n = t < COUNT_DUR ? Math.min(STEPS, Math.floor(t / (COUNT_DUR / STEPS)) + 1) : STEPS;
-        timerNum.textContent = n;
+        const progress = Math.min(1, t / COUNT_DUR);
+        const n = t < COUNT_DUR ? Math.floor(progress * STEPS) + 1 : STEPS;
+        timerNum.textContent = Math.min(STEPS, n);
+        ringEl.setAttribute('stroke-dashoffset', String(RING_LEN * (1 - progress)));
         requestAnimationFrame(tick);
       })();
     }
